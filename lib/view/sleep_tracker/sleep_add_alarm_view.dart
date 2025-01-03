@@ -18,6 +18,7 @@ class _SleepAddAlarmViewState extends State<SleepAddAlarmView> {
 
   @override
   Widget build(BuildContext context) {
+    // ignore: unused_local_variable
     var media = MediaQuery.of(context).size;
 
     return Scaffold(

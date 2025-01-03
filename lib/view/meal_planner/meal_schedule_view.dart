@@ -16,6 +16,7 @@ class _MealScheduleViewState extends State<MealScheduleView> {
   final CalendarAgendaController _calendarAgendaControllerAppBar =
       CalendarAgendaController();
 
+  // ignore: unused_field
   late DateTime _selectedDateAppBBar;
 
   List breakfastArr = [
