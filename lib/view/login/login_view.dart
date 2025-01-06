@@ -37,7 +37,7 @@ class _LoginViewState extends State<LoginView> {
     if (responseData['status'] == 'success') {
       Fluttertoast.showToast(msg: responseData['message']);
       int userId = responseData['data']['id'];
-      Navigator.push(
+      Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => MainTabView(userId: userId)),
       );

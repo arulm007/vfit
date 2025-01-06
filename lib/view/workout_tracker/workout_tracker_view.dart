@@ -152,7 +152,7 @@ class _WorkoutTrackerViewState extends State<WorkoutTrackerView> {
                           (LineChartBarData barData, List<int> spotIndexes) {
                         return spotIndexes.map((index) {
                           return TouchedSpotIndicatorData(
-                            const FlLine(
+                            FlLine(
                               color: Colors.transparent,
                             ),
                             FlDotData(
@@ -190,8 +190,8 @@ class _WorkoutTrackerViewState extends State<WorkoutTrackerView> {
                     maxY: 110,
                     titlesData: FlTitlesData(
                         show: true,
-                        leftTitles: const AxisTitles(),
-                        topTitles: const AxisTitles(),
+                        leftTitles: AxisTitles(),
+                        topTitles: AxisTitles(),
                         bottomTitles: AxisTitles(
                           sideTitles: bottomTitles,
                         ),
@@ -342,15 +342,10 @@ class _WorkoutTrackerViewState extends State<WorkoutTrackerView> {
                       itemBuilder: (context, index) {
                         var wObj = whatArr[index] as Map? ?? {};
                         return InkWell(
-                            onTap: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => WorkoutDetailView(
-                                            dObj: wObj,
-                                          )));
-                            },
-                            child: WhatTrainRow(wObj: wObj));
+                          onTap: (){
+                            Navigator.push(context, MaterialPageRoute(builder: (context) =>  WorkoutDetailView( dObj: wObj, ) ));
+                          },
+                          child:  WhatTrainRow(wObj: wObj) );
                       }),
                   SizedBox(
                     height: media.width * 0.1,
@@ -381,7 +376,7 @@ class _WorkoutTrackerViewState extends State<WorkoutTrackerView> {
         color: TColor.white,
         barWidth: 4,
         isStrokeCapRound: true,
-        dotData: const FlDotData(show: false),
+        dotData: FlDotData(show: false),
         belowBarData: BarAreaData(show: false),
         spots: const [
           FlSpot(1, 35),
@@ -399,7 +394,7 @@ class _WorkoutTrackerViewState extends State<WorkoutTrackerView> {
         color: TColor.white.withOpacity(0.5),
         barWidth: 2,
         isStrokeCapRound: true,
-        dotData: const FlDotData(show: false),
+        dotData: FlDotData(show: false),
         belowBarData: BarAreaData(
           show: false,
         ),

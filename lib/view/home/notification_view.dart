@@ -1,24 +1,49 @@
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 import '../../common/colo_extension.dart';
 import '../../common_widget/notification_row.dart';
 
 class NotificationView extends StatefulWidget {
-  const NotificationView({super.key});
+  final int userId;
+  const NotificationView({super.key, required this.userId});
 
   @override
   State<NotificationView> createState() => _NotificationViewState();
 }
 
 class _NotificationViewState extends State<NotificationView> {
-  List notificationArr = [
-    {"image": "assets/img/Workout1.png", "title": "Hey, it’s time for lunch", "time": "About 1 minutes ago"},
-    {"image": "assets/img/Workout2.png", "title": "Don’t miss your lowerbody workout", "time": "About 3 hours ago"},
-    {"image": "assets/img/Workout3.png", "title": "Hey, let’s add some meals for your b", "time": "About 3 hours ago"},
-    {"image": "assets/img/Workout1.png", "title": "Congratulations, You have finished A..", "time": "29 May"},
-    {"image": "assets/img/Workout2.png", "title": "Hey, it’s time for lunch", "time": "8 April"},
-    {"image": "assets/img/Workout3.png", "title": "Ups, You have missed your Lowerbo...", "time": "8 April"},
-  ];
+  List notificationArr = [];
+
+  @override
+  void initState() {
+    super.initState();
+    fetchNotifications();
+  }
+
+  Future<void> fetchNotifications() async {
+    final response = await http.post(
+      Uri.parse('http://172.25.91.241/fitness/get_notifications.php'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(<String, int>{
+        'id': widget.userId,
+      }),
+    );
+
+    final responseData = jsonDecode(response.body);
+    print("API Response: $responseData"); // Debugging statement
+
+    if (responseData['status'] == 'success') {
+      setState(() {
+        notificationArr = responseData['data'];
+      });
+    } else {
+      print("Error: ${responseData['message']}"); // Debugging statement
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -75,13 +100,18 @@ class _NotificationViewState extends State<NotificationView> {
       ),
       backgroundColor: TColor.white,
       body: ListView.separated(
-        padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 25),
-        itemBuilder: ((context, index) {
-          var nObj = notificationArr[index] as Map? ?? {};
-          return NotificationRow(nObj: nObj);
-      }), separatorBuilder: (context, index){
-        return Divider(color: TColor.gray.withOpacity(0.5), height: 1, );
-      }, itemCount: notificationArr.length),
+          padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 25),
+          itemBuilder: ((context, index) {
+            var nObj = notificationArr[index] as Map? ?? {};
+            return NotificationRow(nObj: nObj);
+          }),
+          separatorBuilder: (context, index) {
+            return Divider(
+              color: TColor.gray.withOpacity(0.5),
+              height: 1,
+            );
+          },
+          itemCount: notificationArr.length),
     );
   }
 }

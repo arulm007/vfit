@@ -225,8 +225,11 @@ class _WorkoutDetailViewState extends State<WorkoutDetailView> {
                           time: "5/27, 09:00 AM",
                           color: TColor.primaryColor2.withOpacity(0.3),
                           onPressed: () {
-
-                              Navigator.push(context, MaterialPageRoute(builder: (context) => const WorkoutScheduleView() )  );
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        const WorkoutScheduleView()));
                           }),
                       SizedBox(
                         height: media.width * 0.02,

@@ -20,6 +20,7 @@ class _ProfileViewState extends State<ProfileView> {
   String firstName = "";
   String height = "";
   String weight = "";
+  String gender = "";
 
   @override
   void initState() {
@@ -44,8 +45,9 @@ class _ProfileViewState extends State<ProfileView> {
     if (responseData['status'] == 'success') {
       setState(() {
         firstName = responseData['data']['first_name'] ?? "N/A";
-        height = responseData['data']['height'] ?? "N/A";
-        weight = responseData['data']['weight'] ?? "N/A";
+        height = responseData['data']['height'].toString();
+        weight = responseData['data']['weight'].toString();
+        gender = responseData['data']['gender'] ?? "N/A";
       });
     } else {
       print("Error: ${responseData['message']}"); // Debugging statement
@@ -118,7 +120,9 @@ class _ProfileViewState extends State<ProfileView> {
                   ClipRRect(
                     borderRadius: BorderRadius.circular(30),
                     child: Image.asset(
-                      "assets/img/u2.png",
+                      gender == "Male"
+                          ? "assets/img/u1.png"
+                          : "assets/img/u2.png",
                       width: 50,
                       height: 50,
                       fit: BoxFit.cover,

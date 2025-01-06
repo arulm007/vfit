@@ -39,9 +39,11 @@ class _SignUpViewState extends State<SignUpView> {
 
     if (responseData['status'] == 'success') {
       Fluttertoast.showToast(msg: responseData['message']);
+      int userId = int.parse(responseData['data']['id'].toString());
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => const CompleteProfileView()),
+        MaterialPageRoute(
+            builder: (context) => CompleteProfileView(userId: userId)),
       );
     } else {
       Fluttertoast.showToast(msg: responseData['message']);
