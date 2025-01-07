@@ -6,7 +6,8 @@ import '../common/common.dart';
 
 class TodaySleepScheduleRow extends StatefulWidget {
   final Map sObj;
-  const TodaySleepScheduleRow({super.key, required this.sObj});
+  const TodaySleepScheduleRow(
+      {super.key, required this.sObj, required String duration});
 
   @override
   State<TodaySleepScheduleRow> createState() => _TodaySleepScheduleRowState();
@@ -63,8 +64,9 @@ class _TodaySleepScheduleRowState extends State<TodaySleepScheduleRow> {
                       ),
                     ],
                   ),
-
-                  const SizedBox(height: 8,),
+                  const SizedBox(
+                    height: 8,
+                  ),
                   Text(
                     widget.sObj["duration"].toString(),
                     style: TextStyle(

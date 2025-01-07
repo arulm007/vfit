@@ -236,6 +236,7 @@ class _SleepScheduleViewState extends State<SleepScheduleView> {
                       var sObj = todaySleepArr[index] as Map? ?? {};
                       return TodaySleepScheduleRow(
                         sObj: sObj,
+                        duration: '',
                       );
                     }),
                 Container(
