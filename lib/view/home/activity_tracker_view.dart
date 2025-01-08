@@ -1,12 +1,17 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+import 'package:fluttertoast/fluttertoast.dart';
 
 import '../../common/colo_extension.dart';
 import '../../common_widget/latest_activity_row.dart';
 import '../../common_widget/today_target_cell.dart';
 
 class ActivityTrackerView extends StatefulWidget {
-  const ActivityTrackerView({super.key});
+  final int userId; // Add userId parameter
+
+  const ActivityTrackerView({super.key, required this.userId});
 
   @override
   State<ActivityTrackerView> createState() => _ActivityTrackerViewState();
@@ -27,6 +32,50 @@ class _ActivityTrackerViewState extends State<ActivityTrackerView> {
       "time": "About 3 hours ago"
     },
   ];
+
+  Future<void> storeWaterIntakeData() async {
+    final response = await http.post(
+      Uri.parse('http://172.25.91.241/fitness/store_water_intake_data.php'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(<String, dynamic>{
+        'user_id': widget.userId, // Use the userId from the widget
+        'intake_date': DateTime.now().toIso8601String().split('T')[0],
+        'intake_amount': 0.3, // Example intake amount in liters
+      }),
+    );
+
+    if (response.statusCode == 200) {
+      final responseData = jsonDecode(response.body);
+      if (responseData['status'] == 'success') {
+        Fluttertoast.showToast(
+          msg: "Water intake data saved successfully!",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          backgroundColor: Colors.green,
+          textColor: Colors.white,
+        );
+        // Optionally, update the UI or fetch the latest data
+      } else {
+        Fluttertoast.showToast(
+          msg: "Failed to save water intake data: ${responseData['message']}",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          backgroundColor: Colors.red,
+          textColor: Colors.white,
+        );
+      }
+    } else {
+      Fluttertoast.showToast(
+        msg: "Failed to save water intake data",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -121,7 +170,8 @@ class _ActivityTrackerViewState extends State<ActivityTrackerView> {
                               borderRadius: BorderRadius.circular(10),
                             ),
                             child: MaterialButton(
-                                onPressed: () {},
+                                onPressed:
+                                    storeWaterIntakeData, // Call the function
                                 padding: EdgeInsets.zero,
                                 height: 30,
                                 shape: RoundedRectangleBorder(
